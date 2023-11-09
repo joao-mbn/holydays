@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  @property --myColor1 {
+    syntax: '<color>';
+    initial-value: theme(colors.cyan.500);
+    inherits: false;
+  }
+
+  @property --myColor2 {
+    syntax: '<color>';
+    initial-value: theme(colors.emerald.500);
+    inherits: false;
+  }
+
+  .optimization-button {
+    background: linear-gradient(var(--myColor1), var(--myColor2));
+    transition:
+      --myColor1 0.3s ease-in-out,
+      --myColor2 0.3s ease-in-out;
+  }
+
+  .optimization-button:hover {
+    --myColor1: theme(colors.orange.500);
+    --myColor2: theme(colors.yellow.500);
+  }
+}
