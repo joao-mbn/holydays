@@ -3,27 +3,55 @@
 @tailwind utilities;
 
 @layer utilities {
-  @property --myColor1 {
+  @property --optimization-button-color-1 {
+    syntax: '<color>';
+    initial-value: theme(colors.sky.500);
+    inherits: false;
+  }
+
+  @property --optimization-button-color-2 {
     syntax: '<color>';
     initial-value: theme(colors.cyan.500);
     inherits: false;
   }
 
-  @property --myColor2 {
+  @property --optimization-button-color-3 {
     syntax: '<color>';
     initial-value: theme(colors.emerald.500);
     inherits: false;
   }
 
   .optimization-button {
-    background: linear-gradient(var(--myColor1), var(--myColor2));
+    background: linear-gradient(
+      45deg,
+      var(--optimization-button-color-1),
+      var(--optimization-button-color-2),
+      var(--optimization-button-color-3)
+    );
     transition:
-      --myColor1 0.3s ease-in-out,
-      --myColor2 0.3s ease-in-out;
+      --optimization-button-color-1 0.3s ease-in-out,
+      --optimization-button-color-2 0.3s ease-in-out,
+      --optimization-button-color-3 0.3s ease-in-out;
   }
 
   .optimization-button:hover {
-    --myColor1: theme(colors.orange.500);
-    --myColor2: theme(colors.yellow.500);
+    --optimization-button-color-1: theme(colors.indigo.500);
+    --optimization-button-color-2: theme(colors.orange.500);
+    --optimization-button-color-3: theme(colors.yellow.500);
+  }
+
+  .gradient-underline {
+    background-image: linear-gradient(to right, #ff0000 0%, #ccc 100%);
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-size: 100% 4px;
+  }
+
+  .gradient-violet-red {
+    background-image: linear-gradient(to right, theme(colors.violet.500), theme(colors.red.500));
+  }
+
+  .gradient-fuchsia-amber {
+    background-image: linear-gradient(to right, theme(colors.fuchsia.500), theme(colors.amber.500));
   }
 }
