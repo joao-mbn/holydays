@@ -8,5 +8,7 @@
   "trailingComma": "es5",
   "bracketSameLine": true,
   "arrowParens": "avoid",
-  "endOfLine": "crlf"
+  "endOfLine": "crlf",
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindAttributes": ["containerClassName", "inputClassName", "toggleClassName"]
 }
