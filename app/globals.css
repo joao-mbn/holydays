@@ -5,19 +5,19 @@
 @layer utilities {
   @property --optimization-button-color-1 {
     syntax: '<color>';
-    initial-value: theme(colors.sky.500);
+    initial-value: theme(colors.indigo.500);
     inherits: false;
   }
 
   @property --optimization-button-color-2 {
     syntax: '<color>';
-    initial-value: theme(colors.cyan.500);
+    initial-value: theme(colors.orange.500);
     inherits: false;
   }
 
   @property --optimization-button-color-3 {
     syntax: '<color>';
-    initial-value: theme(colors.emerald.500);
+    initial-value: theme(colors.yellow.500);
     inherits: false;
   }
 
@@ -35,9 +35,9 @@
   }
 
   .optimization-button:hover {
-    --optimization-button-color-1: theme(colors.indigo.500);
-    --optimization-button-color-2: theme(colors.orange.500);
-    --optimization-button-color-3: theme(colors.yellow.500);
+    --optimization-button-color-1: theme(colors.sky.500);
+    --optimization-button-color-2: theme(colors.cyan.500);
+    --optimization-button-color-3: theme(colors.emerald.500);
   }
 
   .gradient-underline {
