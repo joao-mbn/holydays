@@ -3,13 +3,13 @@ import { useOptimizationFormContext } from '../(context)/OptimizationFormContext
 export function OptimizationOutputs() {
   const { optimalVacation, duration } = useOptimizationFormContext();
 
-  if (!optimalVacation) return null;
+  if (!optimalVacation) return <div></div>;
 
   const { vacationStart, vacationEnd, investmentGainRatio } = optimalVacation;
 
   return (
-    <section className="mt-10 flex justify-center text-2xl leading-loose">
-      <p className="w-3/4 text-center lg:w-1/2">
+    <section className="flex w-full justify-center">
+      <p className="mx-6 break-words text-center text-xl leading-10 sm:text-2xl md:max-w-2xl">
         Schedule your vacations from
         <span className="gradient-underline gradient-violet-red m-2">{vacationStart.toLocaleDateString()}</span>
         to

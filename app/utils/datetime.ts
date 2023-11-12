@@ -38,3 +38,7 @@ export function parseInputStringToDate(dateString: string) {
   date.setMinutes(offset);
   return date;
 }
+
+export function daysDiff(date1: Date, date2: Date) {
+  return Math.abs(date1.getTime() - date2.getTime()) / 1000 / 60 / 60 / 24;
+}

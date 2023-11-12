@@ -5,7 +5,7 @@ import { DateValueType } from 'react-tailwindcss-datepicker';
 import { OptimizationFormContext } from '../(context)/OptimizationFormContext';
 import { OptimalVacation, findOptimalVacation } from '../algorithm/algorithm';
 import { DateRange } from '../types/datetime';
-import { parseInputStringToDate } from '../utils/datetime';
+import { daysDiff, parseInputStringToDate } from '../utils/datetime';
 import { OptimizationInputs } from './OptimizationInputs';
 import { OptimizationOutputs } from './OptimizationOutputs';
 
@@ -21,9 +21,9 @@ export function OptimizationForm() {
     startDate: new Date(today),
     endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()),
   });
-
   const searchRangeIsNull = searchRange.startDate == null || searchRange.endDate == null;
 
+  const [validationMessage, setValidationMessage] = useState('');
   const [optimalVacation, setOptimalVacation] = useState<OptimalVacation>();
 
   function handleClickToFindVacation() {
@@ -40,11 +40,25 @@ export function OptimizationForm() {
     );
   }
 
-  const handleSearchRange = (newValue: DateValueType) => {
+  const handleChangeSearchRange = (newValue: DateValueType) => {
     if (newValue == null || newValue.startDate == null || newValue.endDate == null) {
       setSearchRange({ startDate: null, endDate: null });
+      setValidationMessage('');
     } else {
       const { startDate, endDate } = newValue;
+
+      const newSearchRange = {
+        startDate: startDate instanceof Date ? startDate : parseInputStringToDate(startDate),
+        endDate: endDate instanceof Date ? endDate : parseInputStringToDate(endDate),
+      };
+
+      if (daysDiff(newSearchRange.endDate, newSearchRange.startDate) < duration) {
+        setValidationMessage(
+          "These vacations won't be very good if I'm taking more days off than there are days to look for. 🤔"
+        );
+      } else {
+        setValidationMessage('');
+      }
 
       setSearchRange({
         startDate: startDate instanceof Date ? startDate : parseInputStringToDate(startDate),
@@ -68,10 +82,11 @@ export function OptimizationForm() {
         duration,
         handleChangeDuration,
         handleClickToFindVacation,
-        handleSearchRange,
+        handleChangeSearchRange,
         interval,
         optimalVacation,
         searchRange,
+        validationMessage,
       }}>
       <OptimizationInputs />
       <OptimizationOutputs />

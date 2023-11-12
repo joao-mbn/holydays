@@ -11,9 +11,10 @@ interface OptimizationFormContextProps {
   };
   handleChangeDuration(newDuration: number): void;
   handleClickToFindVacation(): void;
-  handleSearchRange: (newValue: DateValueType) => void;
+  handleChangeSearchRange: (newValue: DateValueType) => void;
   optimalVacation?: OptimalVacation;
   searchRange: DateRange | { startDate: null; endDate: null };
+  validationMessage: string;
 }
 
 export const OptimizationFormContext = createContext<OptimizationFormContextProps | null>(null);
