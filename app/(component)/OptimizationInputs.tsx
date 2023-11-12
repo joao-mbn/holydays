@@ -40,7 +40,7 @@ export function OptimizationInputs() {
           maxDate={interval.to}
           containerClassName="relative pl-2"
           inputClassName={
-            'relative w-[17rem] flex-grow rounded-lg bg-sky-100/80 py-1 pl-2 outline-none transition-all duration-300 placeholder:text-sky-950/60 sm:w-[23rem]'
+            'relative w-80 flex-grow rounded-lg bg-sky-100/80 py-1 pl-2 outline-none transition-all duration-300 placeholder:text-sky-950/60 sm:w-[23rem]'
           }
           toggleClassName="absolute right-0 h-full rounded-br-lg rounded-tr-lg bg-sky-950 px-3 text-sky-50"
           value={{
@@ -54,7 +54,7 @@ export function OptimizationInputs() {
         />
       </div>
       {validationMessage ? (
-        <p className="leading-10 underline decoration-red-500 decoration-4 underline-offset-8 md:max-w-2xl">
+        <p className="sm:leading-12 leading-10 underline decoration-red-500 decoration-4 underline-offset-8 md:max-w-2xl">
           {validationMessage}
         </p>
       ) : null}
