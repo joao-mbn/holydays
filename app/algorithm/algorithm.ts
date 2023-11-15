@@ -1,4 +1,5 @@
 import Holidays from 'date-holidays';
+import { LOWER_LIMIT_DURATION, UPPER_LIMIT_DURATION } from '../utils/constants';
 import { compareDateAtDay, getWeekDay, truncateDateToDay } from '../utils/datetime';
 
 type FindOptimalVacationArgs = {
@@ -23,8 +24,8 @@ export function findOptimalVacation(args: FindOptimalVacationArgs) {
 
   const { lowerLimit, upperLimit, duration } = args;
 
-  if (duration > 30) throw new Error('Exceeded upper limit of days.');
-  if (duration < 5) throw new Error('Exceeded lower limit of days.');
+  if (duration > UPPER_LIMIT_DURATION) throw new Error('Exceeded upper limit of days.');
+  if (duration < LOWER_LIMIT_DURATION) throw new Error('Exceeded lower limit of days.');
 
   const lowerLimitDate = truncateDateToDay(lowerLimit);
   const upperLimitDate = truncateDateToDay(upperLimit);

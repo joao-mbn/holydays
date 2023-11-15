@@ -21,9 +21,8 @@ export function OptimizationInputs() {
         <span>I will take</span>
         <input
           className="mx-2 w-14 rounded-lg bg-sky-100/80 pl-1 focus:outline-none"
-          type="number"
-          min="5"
-          max="30"
+          type="numeric"
+          min="0"
           value={duration}
           onChange={e => handleChangeDuration(Number(e.target.value))}
         />
@@ -54,7 +53,7 @@ export function OptimizationInputs() {
         />
       </div>
       {validationMessage ? (
-        <p className="sm:leading-12 leading-10 underline decoration-red-500 decoration-4 underline-offset-8 md:max-w-2xl">
+        <p className="leading-10 underline decoration-red-500 decoration-4 underline-offset-8 sm:leading-12 md:max-w-2xl">
           {validationMessage}
         </p>
       ) : null}

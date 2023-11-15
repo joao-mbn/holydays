@@ -5,6 +5,7 @@ import { DateValueType } from 'react-tailwindcss-datepicker';
 import { OptimizationFormContext } from '../(context)/OptimizationFormContext';
 import { OptimalVacation, findOptimalVacation } from '../algorithm/algorithm';
 import { DateRange } from '../types/datetime';
+import { UPPER_LIMIT_DURATION } from '../utils/constants';
 import { daysDiff, parseInputStringToDate } from '../utils/datetime';
 import { OptimizationInputs } from './OptimizationInputs';
 import { OptimizationOutputs } from './OptimizationOutputs';
@@ -70,9 +71,9 @@ export function OptimizationForm() {
   };
 
   function handleChangeDuration(newDuration: number) {
-    if (newDuration == null || newDuration < 5 || newDuration > 30) return;
+    if (isNaN(newDuration)) return;
 
-    setDuration(newDuration);
+    setDuration(Math.min(newDuration, UPPER_LIMIT_DURATION));
     setOptimalVacation(undefined);
   }
 
