@@ -37,11 +37,11 @@ export function OptimizationInputs() {
           primaryColor="sky"
           minDate={interval.from}
           maxDate={interval.to}
-          containerClassName="relative pl-2"
+          containerClassName="datepicker-container relative h-full pl-2"
           inputClassName={
-            'relative w-80 flex-grow rounded-lg bg-sky-100/80 py-1 pl-2 outline-none transition-all duration-300 placeholder:text-sky-950/60 sm:w-[23rem]'
+            'relative h-9 w-80 flex-grow rounded-lg bg-sky-100/80 py-1 pl-2 outline-none transition-all duration-300 placeholder:text-sky-950/60 sm:h-10 sm:w-[23rem]'
           }
-          toggleClassName="absolute right-0 h-full rounded-br-lg rounded-tr-lg bg-sky-950 px-3 text-sky-50"
+          toggleClassName="absolute right-0 h-9 rounded-br-lg rounded-tr-lg bg-sky-950 px-3 text-sky-50 sm:h-10"
           value={{
             startDate: searchRangeIsNull ? null : parseDateToInputString(searchRange.startDate),
             endDate: searchRangeIsNull ? null : parseDateToInputString(searchRange.endDate),
