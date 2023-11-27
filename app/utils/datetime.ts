@@ -35,7 +35,7 @@ export function parseDateToInputString(date: Date) {
 export function parseInputStringToDate(dateString: string) {
   const date = new Date(Date.parse(dateString));
   const offset = date.getTimezoneOffset();
-  date.setMinutes(offset);
+  date.setMinutes(date.getMinutes() + offset);
   return date;
 }
 
