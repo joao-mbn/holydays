@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DateValueType } from 'react-tailwindcss-datepicker';
 import { OptimizationFormContext } from '../(context)/OptimizationFormContext';
 import { OptimalVacation, findOptimalVacation } from '../algorithm/algorithm';
@@ -11,11 +11,14 @@ import { OptimizationInputs } from './OptimizationInputs';
 import { OptimizationOutputs } from './OptimizationOutputs';
 
 export function OptimizationForm() {
-  const today = new Date();
-  const interval = {
-    from: new Date(today),
-    to: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()),
-  };
+  const today = useMemo(() => new Date(), []);
+  const interval = useMemo(
+    () => ({
+      from: new Date(today),
+      to: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()),
+    }),
+    [today]
+  );
 
   const [duration, setDuration] = useState(10);
   const [searchRange, setSearchRange] = useState<DateRange | { startDate: null; endDate: null }>({
