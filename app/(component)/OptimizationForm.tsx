@@ -11,10 +11,12 @@ import { OptimizationInputs } from './OptimizationInputs';
 import { OptimizationOutputs } from './OptimizationOutputs';
 
 export function OptimizationForm() {
+  // These memos solved a bug where between 23h-0h in UTC -3 you couldn't select the today's date.
+  // It seemed to be something related to an optimization that the interval was being calculated in the server and not updated.
   const today = useMemo(() => new Date(), []);
   const interval = useMemo(
     () => ({
-      from: new Date(today),
+      from: today,
       to: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()),
     }),
     [today]
@@ -22,8 +24,8 @@ export function OptimizationForm() {
 
   const [duration, setDuration] = useState(10);
   const [searchRange, setSearchRange] = useState<DateRange | { startDate: null; endDate: null }>({
-    startDate: new Date(today),
-    endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()),
+    startDate: interval.from,
+    endDate: interval.to,
   });
   const searchRangeIsNull = searchRange.startDate == null || searchRange.endDate == null;
 
