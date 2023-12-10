@@ -55,6 +55,10 @@
     background-image: linear-gradient(to right, theme(colors.fuchsia.500), theme(colors.amber.500));
   }
 
+  .gradient-amber-fuchsia {
+    background-image: linear-gradient(to left, theme(colors.fuchsia.500), theme(colors.amber.500));
+  }
+
   .datepicker-container > div.absolute {
     position: unset;
   }

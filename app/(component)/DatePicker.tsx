@@ -29,7 +29,7 @@ export function DatePicker() {
       primaryColor="sky"
       minDate={interval.from}
       maxDate={interval.to}
-      containerClassName="datepicker-container relative h-full max-w-full pl-2"
+      containerClassName="datepicker-container relative h-full max-w-full"
       inputClassName={
         'tiny:h-9 tiny:w-[17rem] relative h-8 w-[14rem] max-w-full rounded-lg bg-sky-100/80 py-1 pl-1 outline-none transition-all duration-300 placeholder:text-sky-950/60 sm:h-10 sm:w-[23rem]'
       }
