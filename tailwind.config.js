@@ -27,6 +27,9 @@ const config = {
       lineHeight: {
         12: '3rem',
       },
+      screens: {
+        tiny: '380px',
+      },
     },
   },
   plugins: [

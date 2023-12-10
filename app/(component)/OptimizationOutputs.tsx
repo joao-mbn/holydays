@@ -9,7 +9,7 @@ export function OptimizationOutputs() {
 
   return (
     <section className="flex w-full justify-center">
-      <p className="sm:leading-12 mx-6 break-words text-center text-xl leading-10 sm:text-2xl md:max-w-2xl">
+      <p className="mx-6 break-words text-center md:max-w-2xl">
         Schedule your vacations from
         <span className="gradient-underline gradient-violet-red m-2">{vacationStart.toLocaleDateString()}</span>
         to
