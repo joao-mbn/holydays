@@ -10,20 +10,22 @@ export function OptimizationInputs() {
   return (
     <section className="mx-6 flex flex-col items-center gap-3 text-center">
       <div>
-        <span>I will take</span>
-        <input
-          aria-label="Input to select number of days-off to be taken"
-          className="tiny:w-10 mx-2 w-8 rounded-lg bg-sky-100/80 pl-1 focus:outline-none sm:w-14"
-          type="numeric"
-          min="0"
-          value={duration}
-          onChange={e => handleChangeDuration(Number(e.target.value))}
-        />
-        <span>days off,</span>
-      </div>
-      <div className="flex max-w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-0">
-        <span>anywhere from</span>
-        <DatePicker />
+        <div className="sm:mb-3">
+          <span>I will take</span>
+          <input
+            aria-label="Input to select number of days-off to be taken"
+            className="tiny:w-10 mx-2 w-8 rounded-lg bg-sky-100/80 pl-1 focus:outline-none sm:w-14"
+            type="numeric"
+            min="0"
+            value={duration}
+            onChange={e => handleChangeDuration(Number(e.target.value))}
+          />
+          <span>days off,</span>
+        </div>
+        <div className="flex max-w-full flex-wrap items-center justify-center gap-x-1 gap-y-1">
+          <span>anywhere from</span>
+          <DatePicker />
+        </div>
       </div>
       {validationMessage ? (
         <p className="underline decoration-red-500 decoration-4 underline-offset-8 md:max-w-2xl">{validationMessage}</p>
