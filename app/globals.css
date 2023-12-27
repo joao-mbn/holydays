@@ -58,14 +58,10 @@
   .gradient-amber-fuchsia {
     background-image: linear-gradient(to left, theme(colors.fuchsia.500), theme(colors.amber.500));
   }
+}
 
-  .datepicker-container > div.absolute {
-    position: unset;
-  }
-
-  @media (min-width: theme(screens.sm)) {
-    .datepicker-container > div.absolute {
-      position: absolute;
-    }
-  }
+::-webkit-calendar-picker-indicator {
+  background-image: url('./../public/calendar.svg');
+  background-position: 100% center;
+  cursor: pointer;
 }
