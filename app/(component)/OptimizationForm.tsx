@@ -46,6 +46,7 @@ export function OptimizationForm() {
         lowerLimit: startDate,
         upperLimit: endDate,
         duration,
+        navigatorLanguages: [...navigator.languages],
       })
     );
   }

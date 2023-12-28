@@ -2,10 +2,18 @@ import Holidays from 'date-holidays';
 import { LOWER_LIMIT_DURATION, UPPER_LIMIT_DURATION } from '../utils/constants';
 import { compareDateAtDay, getWeekDay, truncateDateToDay } from '../utils/datetime';
 
-type FindOptimalVacationArgs = {
-  duration: number;
+type CommonArgs = {
+  navigatorLanguages: string[];
   lowerLimit: Date;
   upperLimit: Date;
+};
+
+type GetHolidaysArgs = CommonArgs & {
+  currentYear: number;
+};
+
+type FindOptimalVacationArgs = CommonArgs & {
+  duration: number;
   isClt?: boolean;
   swapThurdaysAndTuesdaysHolidays?: boolean;
 };
@@ -17,16 +25,12 @@ export type OptimalVacation = {
 };
 
 export function findOptimalVacation(args: FindOptimalVacationArgs) {
-  const currentYear = new Date().getFullYear();
-  const region = new Holidays('br', 'rj', 'rj');
-  const thisYearHolidays = region.getHolidays(currentYear);
-  const nextYearHolidays = region.getHolidays(currentYear + 1);
-
   const { lowerLimit, upperLimit, duration } = args;
 
   if (duration > UPPER_LIMIT_DURATION) throw new Error('Exceeded upper limit of days.');
   if (duration < LOWER_LIMIT_DURATION) throw new Error('Exceeded lower limit of days.');
 
+  const currentYear = new Date().getFullYear();
   const lowerLimitDate = truncateDateToDay(lowerLimit);
   const upperLimitDate = truncateDateToDay(upperLimit);
   const today = truncateDateToDay(new Date());
@@ -40,10 +44,7 @@ export function findOptimalVacation(args: FindOptimalVacationArgs) {
     throw new Error('Upper end of interval cannot exceed end of next year.');
   }
 
-  const holidays = thisYearHolidays
-    .concat(nextYearHolidays)
-    .filter(h => h.type === 'public' && h.start >= lowerLimit && h.end <= upperLimit)
-    .map(h => h.start);
+  const holidays = getHolidays({ ...args, currentYear });
 
   let vacationStart = lowerLimitDate;
   let vacationEnd = new Date(lowerLimitDate);
@@ -109,4 +110,25 @@ function calculateInvestmentGainRatio(start: Date, end: Date, duration: number, 
   }
 
   return gained / invested;
+}
+
+function getHolidays({ navigatorLanguages, currentYear, lowerLimit, upperLimit }: GetHolidaysArgs): Date[] {
+  const country = navigatorLanguages?.[0]?.split('-')[1] ?? 'US';
+  const parsedLanguages = navigatorLanguages
+    ?.map(l => l.split('-')[0])
+    ?.toSorted()
+    .filter((l, i, self) => l !== self[i + 1]);
+  const languages = parsedLanguages == null || parsedLanguages.length === 0 ? ['en'] : parsedLanguages;
+
+  const region = new Holidays(country, { languages, types: ['public'] });
+
+  const thisYearHolidays = region.getHolidays(currentYear);
+  const nextYearHolidays = region.getHolidays(currentYear + 1);
+
+  const holidays = thisYearHolidays
+    .concat(nextYearHolidays)
+    .filter(h => h.start >= lowerLimit && h.end <= upperLimit)
+    .map(h => h.start);
+
+  return holidays;
 }
