@@ -29,7 +29,8 @@ export function getWeekDay(date: Date) {
 export function parseDateToInputString(date: Date) {
   const offset = date.getTimezoneOffset();
   date = new Date(date.getTime() - offset * 60 * 1000);
-  return date.toISOString().split('T')[0];
+  const dateString = date.toISOString().split('T')[0];
+  return dateString;
 }
 
 export function parseInputStringToDate(dateString: string) {
@@ -40,7 +41,9 @@ export function parseInputStringToDate(dateString: string) {
 }
 
 export function daysDiff(date1: Date, date2: Date) {
-  return Math.abs(date1.getTime() - date2.getTime()) / 1000 / 60 / 60 / 24;
+  return Math.floor(
+    Math.abs(truncateDateToDay(date1).getTime() - truncateDateToDay(date2).getTime()) / 1000 / 60 / 60 / 24
+  );
 }
 
 export function dateMin(date1: Date, date2: Date) {
