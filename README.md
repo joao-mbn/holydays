@@ -18,6 +18,12 @@ You can interact with Holydays in various ways:
 - **Locally with Docker**: Use Docker Compose to run the application with `docker compose up`.
 - **Locally without Docker**: Install the necessary dependencies specified in the `package.json`. Ensure compatibility with the Node.js version specified in the package.json engines.
 
+### Testing the Project
+
+#### Unit Tests
+
+This project uses Vitest for unit testing. You can run the test suites of the project by running `npm run test` on the command line. For informations on topics such as debugging and IDE integrations you can use the official [Vitest Guide](https://vitest.dev/guide/).
+
 ## Feedback and Support
 
 For feedback, issues, or assistance, please create an issue or reach out via [email](mailto:joaombn97@gmail.com).
