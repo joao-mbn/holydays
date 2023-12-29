@@ -102,7 +102,7 @@ export function OptimizationForm() {
   function validateRangeWithDuration(_duration: typeof duration, _searchRange: typeof searchRange) {
     if (_searchRange.startDate == null || _searchRange.endDate == null) return;
 
-    if (daysDiff(_searchRange.endDate, _searchRange.startDate) < _duration) {
+    if (daysDiff(_searchRange.endDate, _searchRange.startDate) + 1 < _duration) {
       setValidationMessage(
         "These vacations won't be very good if I'm taking more days off than there are days to look for. 🤔"
       );

@@ -173,15 +173,15 @@ describe('parseInputStringToDate', () => {
 
 describe('daysDiff', () => {
   test('should calculate difference between two dates', () => {
-    const date1 = new Date('2023-12-31T00:00:00Z');
-    const date2 = new Date('2024-01-01T00:00:00Z');
+    const date1 = new Date(2024, 2, 1);
+    const date2 = new Date(2024, 2, 20);
     const result = daysDiff(date1, date2);
-    expect(result).toBe(1);
+    expect(result).toBe(19);
   });
 
   test('should handle negative difference correctly', () => {
-    const date1 = new Date('2024-01-01T00:00:00Z');
-    const date2 = new Date('2023-12-31T00:00:00Z');
+    const date1 = new Date(2024, 0, 1);
+    const date2 = new Date(2023, 11, 31);
     const result = daysDiff(date1, date2);
     expect(result).toBe(1); // Absolute difference is 1 day, regardless of order
   });
