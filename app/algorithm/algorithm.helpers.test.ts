@@ -1,5 +1,13 @@
 import { describe, expect, test } from 'vitest';
-import { GetHolidaysArgs, getCountry, getHolidays, getLanguages, validateDuration, validateLimit } from '.';
+import {
+  GetHolidaysArgs,
+  calculateInvestmentGainRatio,
+  getCountry,
+  getHolidays,
+  getLanguages,
+  validateDuration,
+  validateLimit,
+} from '.';
 import { DEFAULT_COUNTRY, DEFAULT_LANGUAGE, LOWER_LIMIT_DURATION, UPPER_LIMIT_DURATION } from '../utils/constants';
 import { truncateDateToDay } from '../utils/datetime';
 
@@ -125,12 +133,13 @@ describe('validateDuration', () => {
 });
 
 describe('validateLimit function', () => {
-  const today = new Date(2023, 6, 15);
-  const nextYearLastDayDate = new Date(2024, 11, 31);
+  const today = new Date();
+  const nextYearLastDayDate = new Date(today.getFullYear() + 1, 11, 31);
 
   test('throws an error when lowerLimit is earlier than today', () => {
-    const lowerLimit = new Date(2023, 6, 10);
-    const upperLimit = new Date(2023, 6, 20);
+    const lowerLimit = new Date(today);
+    lowerLimit.setFullYear(lowerLimit.getFullYear() - 1);
+    const upperLimit = new Date(nextYearLastDayDate);
 
     expect(() => validateLimit({ lowerLimit, upperLimit, nextYearLastDayDate, today })).toThrowError(
       'Lower end of interval cannot be earlier than today.'
@@ -138,8 +147,9 @@ describe('validateLimit function', () => {
   });
 
   test('throws an error when upperLimit exceeds the end of next year', () => {
-    const lowerLimit = new Date(2023, 7, 1);
-    const upperLimit = new Date(2025, 0, 1);
+    const lowerLimit = new Date(today);
+    const upperLimit = new Date(nextYearLastDayDate);
+    upperLimit.setFullYear(upperLimit.getFullYear() + 1);
 
     expect(() => validateLimit({ lowerLimit, upperLimit, nextYearLastDayDate, today })).toThrowError(
       'Upper end of interval cannot exceed end of next year.'
@@ -147,9 +157,101 @@ describe('validateLimit function', () => {
   });
 
   test('does not throw an error when limits are within valid range', () => {
-    const lowerLimit = new Date(2023, 8, 1);
-    const upperLimit = new Date(2024, 10, 1);
+    const lowerLimit = new Date(today);
+    const upperLimit = new Date(nextYearLastDayDate);
 
     expect(() => validateLimit({ lowerLimit, upperLimit, nextYearLastDayDate, today })).not.toThrow();
+  });
+});
+
+describe('calculateInvestmentGainRatio', () => {
+  test('has the correct ratio when there is no adjacent weekends or holidays', () => {
+    const start = new Date(2024, 0, 16); // Jan 16nd, 2024. Tuesday.
+    const end = new Date(2024, 0, 18); // Jan 18th, 2024. Thursday.
+    const holidays: Date[] = [];
+    const invested = 3;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(1);
+  });
+
+  test('has the correct ratio when there is adjacent weekends looking forward', () => {
+    const start = new Date(2024, 0, 16); // Jan 16th, 2024. Tuesday.
+    const end = new Date(2024, 0, 19); // Jan 19th, 2024. Friday.
+    const holidays: Date[] = [];
+    const invested = 4;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(1.5);
+  });
+
+  test('has the correct ratio when there is adjacent weekends looking backwards', () => {
+    const start = new Date(2024, 0, 15); // Jan 15th, 2024. Monday.
+    const end = new Date(2024, 0, 18); // Jan 18th, 2024. Thursday.
+    const holidays: Date[] = [];
+    const invested = 4;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(1.5);
+  });
+
+  test('has the correct ratio when there is adjacent weekends looking forwards and backwards', () => {
+    const start = new Date(2024, 0, 15); // Jan 15th, 2024. Monday.
+    const end = new Date(2024, 0, 19); // Jan 19th, 2024. Friday.
+    const holidays: Date[] = [];
+    const invested = 5;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(1.8);
+  });
+
+  test('has the correct ratio when there is a holiday inside the interval', () => {
+    const start = new Date(2024, 0, 16); // Jan 16th, 2024. Tuesday.
+    const end = new Date(2024, 0, 18); // Jan 18th, 2024. Thursday.
+    const holidays: Date[] = [new Date(2024, 0, 17)]; // Jan 17th, 2024. Wednesday.
+    const invested = 3;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(1);
+  });
+
+  test('has the correct ratio when there is a holiday in the edge of the interval', () => {
+    const start = new Date(2024, 0, 16); // Jan 16th, 2024. Tuesday.
+    const end = new Date(2024, 0, 18); // Jan 18th, 2024. Thursday.
+    const holidays: Date[] = [new Date(2024, 0, 16)]; // Jan 16th, 2024. Tuesday.
+    const invested = 3;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(1);
+  });
+
+  test('has the correct ratio when interval is adjacent to a holiday', () => {
+    const start = new Date(2024, 0, 17); // Jan 17th, 2024. Wednesday.
+    const end = new Date(2024, 0, 18); // Jan 18th, 2024. Thursday.
+    const holidays: Date[] = [new Date(2024, 0, 16)]; // Jan 16th, 2024. Tuesday.
+    const invested = 2;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(1.5);
+  });
+
+  test('has the correct ratio when holiday adjacent to interval makes a bridge to a weekend', () => {
+    const start = new Date(2024, 0, 16); // Jan 16th, 2024. Tuesday.
+    const end = new Date(2024, 0, 18); // Jan 18th, 2024. Thursday.
+    const holidays: Date[] = [new Date(2024, 0, 15)]; // Jan 15th, 2024. Monday.
+    const invested = 3;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(2);
+  });
+
+  test('has the correct ratio when weekend adjacent to interval makes a bridge to a holiday', () => {
+    const start = new Date(2024, 0, 15); // Jan 15th, 2024. Monday.
+    const end = new Date(2024, 0, 17); // Jan 17th, 2024. Wednesday.
+    const holidays: Date[] = [new Date(2024, 0, 12)]; // Jan 12th, 2024. Friday.
+    const invested = 3;
+
+    const ratio = calculateInvestmentGainRatio(start, end, invested, holidays);
+    expect(ratio).toBe(2);
   });
 });

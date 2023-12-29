@@ -1,12 +1,19 @@
-import { FindOptimalVacationArgs, OptimalVacation, getHolidays, validateDuration, validateLimit } from '.';
-import { compareDateAtDay, getWeekDay, truncateDateToDay } from '../utils/datetime';
+import {
+  FindOptimalVacationArgs,
+  OptimalVacation,
+  calculateInvestmentGainRatio,
+  getHolidays,
+  validateDuration,
+  validateLimit,
+} from '.';
+import { truncateDateToDay } from '../utils/datetime';
 
 export function findOptimalVacation(args: FindOptimalVacationArgs) {
-  let { duration, lowerLimit, upperLimit } = args;
+  let { duration } = args;
   validateDuration(duration);
 
-  lowerLimit = truncateDateToDay(lowerLimit);
-  upperLimit = truncateDateToDay(upperLimit);
+  const lowerLimit = truncateDateToDay(args.lowerLimit);
+  const upperLimit = truncateDateToDay(args.upperLimit);
 
   const today = truncateDateToDay(new Date());
   const currentYear = today.getFullYear();
@@ -16,9 +23,9 @@ export function findOptimalVacation(args: FindOptimalVacationArgs) {
 
   const holidays = getHolidays({ ...args, currentYear });
 
-  let vacationStart = lowerLimit;
+  let vacationStart = new Date(lowerLimit);
   let vacationEnd = new Date(lowerLimit);
-  vacationEnd.setDate(lowerLimit.getDate() + duration - 1);
+  vacationEnd.setDate(vacationStart.getDate() + duration - 1);
 
   let optimalInterval: OptimalVacation = {
     vacationStart: new Date(vacationStart),
@@ -26,7 +33,7 @@ export function findOptimalVacation(args: FindOptimalVacationArgs) {
     investmentGainRatio: calculateInvestmentGainRatio(vacationStart, vacationEnd, duration, holidays),
   };
 
-  while (vacationEnd.getTime() <= upperLimit.getTime()) {
+  while (vacationEnd.getTime() < upperLimit.getTime()) {
     vacationStart.setDate(vacationStart.getDate() + 1);
     vacationEnd.setDate(vacationEnd.getDate() + 1);
 
@@ -41,43 +48,4 @@ export function findOptimalVacation(args: FindOptimalVacationArgs) {
   }
 
   return optimalInterval;
-}
-
-function calculateInvestmentGainRatio(start: Date, end: Date, duration: number, holidays: Date[]) {
-  const invested = duration;
-  let gained = duration;
-
-  let freeDaysStart = new Date(start);
-  let dayBeforeStart = new Date(freeDaysStart);
-  dayBeforeStart.setDate(freeDaysStart.getDate() - 1);
-
-  while (
-    getWeekDay(freeDaysStart) === 'monday' ||
-    getWeekDay(freeDaysStart) === 'sunday' ||
-    holidays.some(h => compareDateAtDay(dayBeforeStart, h))
-  ) {
-    freeDaysStart = dayBeforeStart;
-
-    dayBeforeStart = new Date(freeDaysStart);
-    dayBeforeStart.setDate(freeDaysStart.getDate() - 1);
-    gained++;
-  }
-
-  let freeDaysEnd = new Date(end);
-  let dayAfterEnd = new Date(freeDaysEnd);
-  dayAfterEnd.setDate(freeDaysEnd.getDate() + 1);
-
-  while (
-    getWeekDay(freeDaysEnd) === 'friday' ||
-    getWeekDay(freeDaysEnd) === 'saturday' ||
-    holidays.some(h => compareDateAtDay(dayAfterEnd, h))
-  ) {
-    freeDaysEnd = dayAfterEnd;
-
-    dayAfterEnd = new Date(freeDaysEnd);
-    dayAfterEnd.setDate(freeDaysEnd.getDate() + 1);
-    gained++;
-  }
-
-  return gained / invested;
 }
