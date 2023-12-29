@@ -1,4 +1,4 @@
-import { useOptimizationFormContext } from '../(context)/OptimizationFormContext';
+import { useOptimizationFormContext } from './OptimizationFormContext';
 
 export function OptimizationOutputs() {
   const { optimalVacation, duration } = useOptimizationFormContext();

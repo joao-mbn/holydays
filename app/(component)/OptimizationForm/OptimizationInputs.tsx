@@ -1,5 +1,5 @@
-import { useOptimizationFormContext } from '../(context)/OptimizationFormContext';
-import { DateRangePicker } from './DateRangePicker';
+import { DateRangePicker } from '../DateRangePicker';
+import { useOptimizationFormContext } from './OptimizationFormContext';
 
 export function OptimizationInputs() {
   const { duration, handleChangeDuration, handleClickToFindVacation, searchRange, validationMessage } =

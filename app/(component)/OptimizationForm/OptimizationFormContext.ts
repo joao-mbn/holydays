@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
-import { OptimalVacation } from '../algorithm/algorithm';
-import { DateRange } from '../types/datetime';
+import { OptimalVacation } from '../../algorithm';
+import { DateRange } from '../../utils/datetime';
 
 interface OptimizationFormContextProps {
   duration: number;

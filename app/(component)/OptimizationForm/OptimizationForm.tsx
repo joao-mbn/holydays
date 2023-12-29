@@ -1,11 +1,10 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { OptimizationFormContext } from '../(context)/OptimizationFormContext';
-import { OptimalVacation, findOptimalVacation } from '../algorithm/algorithm';
-import { DateRange } from '../types/datetime';
-import { UPPER_LIMIT_DURATION } from '../utils/constants';
-import { dateMax, dateMin, daysDiff, parseInputStringToDate } from '../utils/datetime';
+import { OptimalVacation, findOptimalVacation } from '../../algorithm';
+import { UPPER_LIMIT_DURATION } from '../../utils/constants';
+import { DateRange, dateMax, dateMin, daysDiff, parseInputStringToDate } from '../../utils/datetime';
+import { OptimizationFormContext } from './OptimizationFormContext';
 import { OptimizationInputs } from './OptimizationInputs';
 import { OptimizationOutputs } from './OptimizationOutputs';
 

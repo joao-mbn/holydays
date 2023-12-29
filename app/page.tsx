@@ -1,5 +1,4 @@
-import { Background, Header, OptimizationForm } from './(component)';
-import { Footer } from './(component)/Footer';
+import { Background, Footer, Header, OptimizationForm } from './(component)';
 
 export default function Home() {
   return (
