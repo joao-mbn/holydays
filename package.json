@@ -11,7 +11,9 @@
     "start": "next start",
     "lint": "next lint",
     "prettier": "npx prettier --write .",
-    "test": "vitest"
+    "test": "vitest",
+    "e2e": "npx playwright test",
+    "e2e-codegen": "npx playwright codegen"
   },
   "dependencies": {
     "classnames": "^2.3.2",
@@ -22,6 +24,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.1",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -39,3 +42,4 @@
     "vitest": "^1.0.4"
   }
 }
+

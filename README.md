@@ -22,7 +22,11 @@ You can interact with Holydays in various ways:
 
 #### Unit Tests
 
-This project uses Vitest for unit testing. You can run the test suites of the project by running `npm run test` on the command line. For informations on topics such as debugging and IDE integrations you can use the official [Vitest Guide](https://vitest.dev/guide/).
+This project uses Vitest for unit testing. You can run the test suites of the project by running `npm run test` on the command line. For more informations, refer to the official [Vitest Guide](https://vitest.dev/guide/).
+
+#### E2E Tests
+
+This project uses Playwright for end-to-end (E2E) testing. You can run the test suites of the project by running `npm run e2e` on the command line. For more informations, refer to the official [Playwright Docs](https://playwright.dev/docs/intro).
 
 ## Feedback and Support
 
