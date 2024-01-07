@@ -31,8 +31,10 @@ export function OptimizationForm() {
   const [optimalVacation, setOptimalVacation] = useState<OptimalVacation>();
 
   const minFrom = interval.from;
-  const maxFrom = searchRange.endDate == null ? interval.to : searchRange.endDate;
-  const minTo = searchRange.startDate == null ? interval.from : searchRange.startDate;
+  /* truncation is needed if the user puts end date smaller than lower limit */
+  const maxFrom = searchRange.endDate == null ? interval.to : dateMax(interval.from, searchRange.endDate);
+  /* truncation is needed if the user puts the start date bigger than the upper limit */
+  const minTo = searchRange.startDate == null ? interval.from : dateMin(interval.to, searchRange.startDate);
   const maxTo = interval.to;
 
   function handleClickToFindVacation() {
@@ -52,11 +54,8 @@ export function OptimizationForm() {
 
   const handleChangeSearchRange = (newDate: string, position: keyof DateRange) => {
     let _newDate: Date | null;
-    if (!newDate) {
+    if (!newDate || isNaN(Number(parseInputStringToDate(newDate)))) {
       _newDate = null;
-    } else if (isNaN(Number(parseInputStringToDate(newDate)))) {
-      _newDate = null;
-      setValidationMessage('Invalid Date');
     } else {
       _newDate = parseInputStringToDate(newDate);
     }
@@ -100,9 +99,9 @@ export function OptimizationForm() {
   }
 
   function validateRangeWithDuration(_duration: typeof duration, _searchRange: typeof searchRange) {
-    if (_searchRange.startDate == null || _searchRange.endDate == null) return;
-
-    if (daysDiff(_searchRange.endDate, _searchRange.startDate) + 1 < _duration) {
+    if (_searchRange.startDate == null || _searchRange.endDate == null) {
+      setValidationMessage('');
+    } else if (daysDiff(_searchRange.endDate, _searchRange.startDate) + 1 < _duration) {
       setValidationMessage(
         "These vacations won't be very good if I'm taking more days off than there are days to look for. 🤔"
       );

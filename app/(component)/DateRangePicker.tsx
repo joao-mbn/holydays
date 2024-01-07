@@ -15,6 +15,7 @@ export function DateRangePicker() {
   return (
     <>
       <input
+        data-testid="start-date-picker"
         aria-label="start date picker"
         className="mx-2 mb-2 rounded-lg bg-sky-100/80 px-1"
         value={searchRangeIsNull ? undefined : parseDateToInputString(searchRange.startDate)}
@@ -26,6 +27,7 @@ export function DateRangePicker() {
       />
       to
       <input
+        data-testid="end-date-picker"
         aria-label="end date picker"
         className="mx-2 mb-2 rounded-lg bg-sky-100/80 px-1"
         type="date"
