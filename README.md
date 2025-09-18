@@ -1,6 +1,6 @@
 # Holydays
 
-Holydays is a tool designed to maximize your uninterrupted time off work within a specified timeframe.
+Holydays is a goofy tool designed to maximize your uninterrupted time off work within a specified timeframe.
 
 ## How It Works
 
